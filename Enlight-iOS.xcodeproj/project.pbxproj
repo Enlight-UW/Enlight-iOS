@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F36F10A19763177000855C3 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F36F10919763177000855C3 /* MainViewController.m */; };
 		9FC721CB1974DA280057A7C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CA1974DA280057A7C8 /* Foundation.framework */; };
 		9FC721CD1974DA280057A7C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CC1974DA280057A7C8 /* CoreGraphics.framework */; };
 		9FC721CF1974DA280057A7C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CE1974DA280057A7C8 /* UIKit.framework */; };
@@ -14,7 +15,6 @@
 		9FC721D71974DA280057A7C8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FC721D61974DA280057A7C8 /* main.m */; };
 		9FC721DB1974DA280057A7C8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FC721DA1974DA280057A7C8 /* AppDelegate.m */; };
 		9FC721DD1974DA280057A7C8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FC721DC1974DA280057A7C8 /* Images.xcassets */; };
-		9FC721E41974DA280057A7C8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721E31974DA280057A7C8 /* XCTest.framework */; };
 		9FC721E51974DA280057A7C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CA1974DA280057A7C8 /* Foundation.framework */; };
 		9FC721E61974DA280057A7C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CE1974DA280057A7C8 /* UIKit.framework */; };
 		9FC721EE1974DA280057A7C8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9FC721EC1974DA280057A7C8 /* InfoPlist.strings */; };
@@ -32,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9F36F10819763177000855C3 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		9F36F10919763177000855C3 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		9FC721C71974DA280057A7C8 /* Enlight-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Enlight-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FC721CA1974DA280057A7C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9FC721CC1974DA280057A7C8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -44,7 +46,6 @@
 		9FC721DA1974DA280057A7C8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9FC721DC1974DA280057A7C8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9FC721E21974DA280057A7C8 /* Enlight-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Enlight-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9FC721E31974DA280057A7C8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		9FC721EB1974DA280057A7C8 /* Enlight-iOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Enlight-iOSTests-Info.plist"; sourceTree = "<group>"; };
 		9FC721ED1974DA280057A7C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9FC721EF1974DA280057A7C8 /* Enlight_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Enlight_iOSTests.m; sourceTree = "<group>"; };
@@ -65,7 +66,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FC721E41974DA280057A7C8 /* XCTest.framework in Frameworks */,
 				9FC721E61974DA280057A7C8 /* UIKit.framework in Frameworks */,
 				9FC721E51974DA280057A7C8 /* Foundation.framework in Frameworks */,
 			);
@@ -79,6 +79,7 @@
 			children = (
 				9FC721D01974DA280057A7C8 /* Enlight-iOS */,
 				9FC721E91974DA280057A7C8 /* Enlight-iOSTests */,
+				9FC721D11974DA280057A7C8 /* Supporting Files */,
 				9FC721C91974DA280057A7C8 /* Frameworks */,
 				9FC721C81974DA280057A7C8 /* Products */,
 			);
@@ -99,7 +100,6 @@
 				9FC721CA1974DA280057A7C8 /* Foundation.framework */,
 				9FC721CC1974DA280057A7C8 /* CoreGraphics.framework */,
 				9FC721CE1974DA280057A7C8 /* UIKit.framework */,
-				9FC721E31974DA280057A7C8 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -109,8 +109,8 @@
 			children = (
 				9FC721D91974DA280057A7C8 /* AppDelegate.h */,
 				9FC721DA1974DA280057A7C8 /* AppDelegate.m */,
-				9FC721DC1974DA280057A7C8 /* Images.xcassets */,
-				9FC721D11974DA280057A7C8 /* Supporting Files */,
+				9F36F10819763177000855C3 /* MainViewController.h */,
+				9F36F10919763177000855C3 /* MainViewController.m */,
 			);
 			path = "Enlight-iOS";
 			sourceTree = "<group>";
@@ -118,12 +118,14 @@
 		9FC721D11974DA280057A7C8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9FC721DC1974DA280057A7C8 /* Images.xcassets */,
 				9FC721D21974DA280057A7C8 /* Enlight-iOS-Info.plist */,
 				9FC721D31974DA280057A7C8 /* InfoPlist.strings */,
 				9FC721D61974DA280057A7C8 /* main.m */,
 				9FC721D81974DA280057A7C8 /* Enlight-iOS-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			path = "Enlight-iOS";
 			sourceTree = "<group>";
 		};
 		9FC721E91974DA280057A7C8 /* Enlight-iOSTests */ = {
@@ -240,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FC721DB1974DA280057A7C8 /* AppDelegate.m in Sources */,
+				9F36F10A19763177000855C3 /* MainViewController.m in Sources */,
 				9FC721D71974DA280057A7C8 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -439,6 +442,7 @@
 				9FC721F51974DA280057A7C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9FC721F61974DA280057A7C8 /* Build configuration list for PBXNativeTarget "Enlight-iOSTests" */ = {
 			isa = XCConfigurationList;
@@ -447,6 +451,7 @@
 				9FC721F81974DA280057A7C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
