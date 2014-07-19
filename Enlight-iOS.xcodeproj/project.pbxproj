@@ -19,6 +19,9 @@
 		9FC721E61974DA280057A7C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CE1974DA280057A7C8 /* UIKit.framework */; };
 		9FC721EE1974DA280057A7C8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9FC721EC1974DA280057A7C8 /* InfoPlist.strings */; };
 		9FC721F01974DA280057A7C8 /* Enlight_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FC721EF1974DA280057A7C8 /* Enlight_iOSTests.m */; };
+		9FD5533B1979EB4C00F45C76 /* FountainDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5533A1979EB4C00F45C76 /* FountainDisplayView.m */; };
+		9FD5533E1979EB7B00F45C76 /* ToggleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5533D1979EB7B00F45C76 /* ToggleView.m */; };
+		9FD55341197A4A3000F45C76 /* CustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD55340197A4A3000F45C76 /* CustomButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,12 @@
 		9FC721EB1974DA280057A7C8 /* Enlight-iOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Enlight-iOSTests-Info.plist"; sourceTree = "<group>"; };
 		9FC721ED1974DA280057A7C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9FC721EF1974DA280057A7C8 /* Enlight_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Enlight_iOSTests.m; sourceTree = "<group>"; };
+		9FD553391979EB4C00F45C76 /* FountainDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FountainDisplayView.h; sourceTree = "<group>"; };
+		9FD5533A1979EB4C00F45C76 /* FountainDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FountainDisplayView.m; sourceTree = "<group>"; };
+		9FD5533C1979EB7B00F45C76 /* ToggleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToggleView.h; sourceTree = "<group>"; };
+		9FD5533D1979EB7B00F45C76 /* ToggleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToggleView.m; sourceTree = "<group>"; };
+		9FD5533F197A4A3000F45C76 /* CustomButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomButton.h; sourceTree = "<group>"; };
+		9FD55340197A4A3000F45C76 /* CustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +120,12 @@
 				9FC721DA1974DA280057A7C8 /* AppDelegate.m */,
 				9F36F10819763177000855C3 /* MainViewController.h */,
 				9F36F10919763177000855C3 /* MainViewController.m */,
+				9FD553391979EB4C00F45C76 /* FountainDisplayView.h */,
+				9FD5533A1979EB4C00F45C76 /* FountainDisplayView.m */,
+				9FD5533C1979EB7B00F45C76 /* ToggleView.h */,
+				9FD5533D1979EB7B00F45C76 /* ToggleView.m */,
+				9FD5533F197A4A3000F45C76 /* CustomButton.h */,
+				9FD55340197A4A3000F45C76 /* CustomButton.m */,
 			);
 			path = "Enlight-iOS";
 			sourceTree = "<group>";
@@ -241,8 +256,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FD55341197A4A3000F45C76 /* CustomButton.m in Sources */,
 				9FC721DB1974DA280057A7C8 /* AppDelegate.m in Sources */,
+				9FD5533B1979EB4C00F45C76 /* FountainDisplayView.m in Sources */,
 				9F36F10A19763177000855C3 /* MainViewController.m in Sources */,
+				9FD5533E1979EB7B00F45C76 /* ToggleView.m in Sources */,
 				9FC721D71974DA280057A7C8 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

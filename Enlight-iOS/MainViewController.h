@@ -7,13 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FountainDisplayView.h"
+
 
 @interface MainViewController : UIViewController
 
-//will contain all the switches when setting the fountain
-@property NSMutableArray *switchArray;
-
-//contains all the labels for the switches
-@property NSMutableArray *labelSwitchArray;
+@property FountainDisplayView *dispView;
 
 @end
