@@ -17,7 +17,7 @@
 #define NUM_VALVES 24
 
 @implementation FountainDisplayView
-@synthesize shapeArray, buttonForShapeArray;
+@synthesize shapeArray;
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -27,10 +27,9 @@
         
         //initialize shape array
         shapeArray = [[NSMutableArray alloc] initWithCapacity:NUM_VALVES];
-        buttonForShapeArray = [[NSMutableArray alloc] initWithCapacity:NUM_VALVES];
         
-        float innerRad = self.frame.size.width / 4;
-        float outerRad = self.frame.size.width / 2 - OFFSET_FROM_CENTER;
+        float innerRad = self.frame.size.width / 6;
+        float outerRad = (self.frame.size.width / 2) - (OFFSET_FROM_CENTER * 2);
         
         float padding = (270 - 90) / (NUM_VALVES / 2);
         float startAngle = 90;
@@ -62,37 +61,21 @@
             
             halfCircle.fillColor = [UIColor clearColor].CGColor;
             halfCircle.strokeColor = [UIColor blackColor].CGColor;
-            halfCircle.lineWidth = 3;
+            halfCircle.lineWidth = 1;
             
             [shapeArray addObject:halfCircle];
             
-            //add button
-            CustomButton *button = [[CustomButton alloc] initWithFrame:self.frame andPath:path];
-            
-            [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [buttonForShapeArray addObject:button];
-            
             //add to UI
             [self.layer addSublayer:halfCircle];
-            [self addSubview:button];
+            
+            CABasicAnimation *animate = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+            animate.duration  = 2;
+            animate.fromValue = [NSNumber numberWithFloat:0.0f];
+            animate.toValue   = [NSNumber numberWithFloat:1.0f];
+            [halfCircle addAnimation:animate forKey:nil];
         }
     }
     return self;
-}
-
--(IBAction)buttonPressed:(UIButton*)sender {
-    //find index
-    int index = (int)[buttonForShapeArray indexOfObject:sender];
-    
-    //use this index to fill the path
-    CAShapeLayer *shape = [shapeArray objectAtIndex:index];
-    
-    if(shape.fillColor == [UIColor clearColor].CGColor) {
-        shape.fillColor = [UIColor redColor].CGColor;
-    } else {
-        shape.fillColor = [UIColor clearColor].CGColor;
-    }
 }
 
 //draws a particular circle section based off of a start and end radius (will use the defines)

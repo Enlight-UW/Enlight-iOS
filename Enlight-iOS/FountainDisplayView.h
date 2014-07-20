@@ -7,12 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CustomButton.h"
 
 @interface FountainDisplayView : UIView
 
 @property NSMutableArray *shapeArray;
-
-@property NSMutableArray *buttonForShapeArray;
 
 @end

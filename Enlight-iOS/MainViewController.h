@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "FountainDisplayView.h"
+#import "CustomButton.h"
 
 
 @interface MainViewController : UIViewController
 
+//view of the fountain itself
 @property FountainDisplayView *dispView;
+
+
+//request control of the fountain
+@property UIButton *reqContButton;
+
+@property NSMutableArray *buttonForShapeArray;
 
 @end
