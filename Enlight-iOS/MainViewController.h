@@ -20,6 +20,10 @@
 //request control of the fountain
 @property UIButton *reqContButton;
 
+//button array corresponding the fountain image
 @property NSMutableArray *buttonForShapeArray;
+
+//title of the fountain
+@property UILabel *enlightTitle;
 
 @end

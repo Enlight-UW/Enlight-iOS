@@ -7,6 +7,7 @@
 //
 
 #import "FountainDisplayView.h"
+#import "Constants.h"
 
 #define OFFSET_FROM_CENTER 10
 

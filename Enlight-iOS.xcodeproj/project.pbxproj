@@ -22,6 +22,7 @@
 		9FD5533B1979EB4C00F45C76 /* FountainDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5533A1979EB4C00F45C76 /* FountainDisplayView.m */; };
 		9FD5533E1979EB7B00F45C76 /* ToggleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5533D1979EB7B00F45C76 /* ToggleView.m */; };
 		9FD55341197A4A3000F45C76 /* CustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD55340197A4A3000F45C76 /* CustomButton.m */; };
+		9FF6B70E197F7648008F4EDD /* APIFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FF6B70D197F7648008F4EDD /* APIFunctions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,9 @@
 		9FD5533D1979EB7B00F45C76 /* ToggleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToggleView.m; sourceTree = "<group>"; };
 		9FD5533F197A4A3000F45C76 /* CustomButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomButton.h; sourceTree = "<group>"; };
 		9FD55340197A4A3000F45C76 /* CustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomButton.m; sourceTree = "<group>"; };
+		9FF6B70B197F71F8008F4EDD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		9FF6B70C197F7648008F4EDD /* APIFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIFunctions.h; sourceTree = "<group>"; };
+		9FF6B70D197F7648008F4EDD /* APIFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIFunctions.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +130,9 @@
 				9FD5533D1979EB7B00F45C76 /* ToggleView.m */,
 				9FD5533F197A4A3000F45C76 /* CustomButton.h */,
 				9FD55340197A4A3000F45C76 /* CustomButton.m */,
+				9FF6B70B197F71F8008F4EDD /* Constants.h */,
+				9FF6B70C197F7648008F4EDD /* APIFunctions.h */,
+				9FF6B70D197F7648008F4EDD /* APIFunctions.m */,
 			);
 			path = "Enlight-iOS";
 			sourceTree = "<group>";
@@ -258,6 +265,7 @@
 			files = (
 				9FD55341197A4A3000F45C76 /* CustomButton.m in Sources */,
 				9FC721DB1974DA280057A7C8 /* AppDelegate.m in Sources */,
+				9FF6B70E197F7648008F4EDD /* APIFunctions.m in Sources */,
 				9FD5533B1979EB4C00F45C76 /* FountainDisplayView.m in Sources */,
 				9F36F10A19763177000855C3 /* MainViewController.m in Sources */,
 				9FD5533E1979EB7B00F45C76 /* ToggleView.m in Sources */,
