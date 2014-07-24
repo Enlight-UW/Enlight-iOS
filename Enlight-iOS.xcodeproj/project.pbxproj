@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		9F36F10A19763177000855C3 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F36F10919763177000855C3 /* MainViewController.m */; };
+		9F440C291980CFDC002BF743 /* enlighticon_29.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C221980CFDC002BF743 /* enlighticon_29.png */; };
+		9F440C2A1980CFDC002BF743 /* enlighticon_40.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C231980CFDC002BF743 /* enlighticon_40.png */; };
+		9F440C2B1980CFDC002BF743 /* enlighticon_58.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C241980CFDC002BF743 /* enlighticon_58.png */; };
+		9F440C2C1980CFDC002BF743 /* enlighticon_76.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C251980CFDC002BF743 /* enlighticon_76.png */; };
+		9F440C2D1980CFDC002BF743 /* enlighticon_80.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C261980CFDC002BF743 /* enlighticon_80.png */; };
+		9F440C2E1980CFDC002BF743 /* enlighticon_120.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C271980CFDC002BF743 /* enlighticon_120.png */; };
+		9F440C2F1980CFDC002BF743 /* enlighticon_152.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C281980CFDC002BF743 /* enlighticon_152.png */; };
 		9FC721CB1974DA280057A7C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CA1974DA280057A7C8 /* Foundation.framework */; };
 		9FC721CD1974DA280057A7C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CC1974DA280057A7C8 /* CoreGraphics.framework */; };
 		9FC721CF1974DA280057A7C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CE1974DA280057A7C8 /* UIKit.framework */; };
@@ -38,6 +45,13 @@
 /* Begin PBXFileReference section */
 		9F36F10819763177000855C3 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		9F36F10919763177000855C3 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		9F440C221980CFDC002BF743 /* enlighticon_29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_29.png; sourceTree = "<group>"; };
+		9F440C231980CFDC002BF743 /* enlighticon_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_40.png; sourceTree = "<group>"; };
+		9F440C241980CFDC002BF743 /* enlighticon_58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_58.png; sourceTree = "<group>"; };
+		9F440C251980CFDC002BF743 /* enlighticon_76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_76.png; sourceTree = "<group>"; };
+		9F440C261980CFDC002BF743 /* enlighticon_80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_80.png; sourceTree = "<group>"; };
+		9F440C271980CFDC002BF743 /* enlighticon_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_120.png; sourceTree = "<group>"; };
+		9F440C281980CFDC002BF743 /* enlighticon_152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_152.png; sourceTree = "<group>"; };
 		9FC721C71974DA280057A7C8 /* Enlight-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Enlight-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FC721CA1974DA280057A7C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9FC721CC1974DA280057A7C8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -87,9 +101,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F440C191980CC1A002BF743 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				9F440C221980CFDC002BF743 /* enlighticon_29.png */,
+				9F440C231980CFDC002BF743 /* enlighticon_40.png */,
+				9F440C241980CFDC002BF743 /* enlighticon_58.png */,
+				9F440C251980CFDC002BF743 /* enlighticon_76.png */,
+				9F440C261980CFDC002BF743 /* enlighticon_80.png */,
+				9F440C271980CFDC002BF743 /* enlighticon_120.png */,
+				9F440C281980CFDC002BF743 /* enlighticon_152.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		9FC721BE1974DA270057A7C8 = {
 			isa = PBXGroup;
 			children = (
+				9F440C191980CC1A002BF743 /* Images */,
 				9FC721D01974DA280057A7C8 /* Enlight-iOS */,
 				9FC721E91974DA280057A7C8 /* Enlight-iOSTests */,
 				9FC721D11974DA280057A7C8 /* Supporting Files */,
@@ -243,8 +272,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F440C2A1980CFDC002BF743 /* enlighticon_40.png in Resources */,
+				9F440C2D1980CFDC002BF743 /* enlighticon_80.png in Resources */,
 				9FC721D51974DA280057A7C8 /* InfoPlist.strings in Resources */,
+				9F440C291980CFDC002BF743 /* enlighticon_29.png in Resources */,
+				9F440C2E1980CFDC002BF743 /* enlighticon_120.png in Resources */,
+				9F440C2B1980CFDC002BF743 /* enlighticon_58.png in Resources */,
 				9FC721DD1974DA280057A7C8 /* Images.xcassets in Resources */,
+				9F440C2F1980CFDC002BF743 /* enlighticon_152.png in Resources */,
+				9F440C2C1980CFDC002BF743 /* enlighticon_76.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

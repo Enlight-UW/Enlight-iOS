@@ -10,19 +10,11 @@
 
 @implementation APIFunctions
 
+#pragma mark Get Functions
+
 //see who is controlling the fountain and how is in queue
 +(NSData*) whoIsControlling:(NSString*)url {
     return [self queryNoBody:[NSString stringWithFormat:@"%@/control/query/", url]];
-}
-
-//request control of the fountain
-+(NSData*) reqControl:(NSString*)url {
-    return [self queryNoBody:[NSString stringWithFormat:@"%@/control/request/", url]];
-}
-
-//release control of the fountain
-+(NSData*) relControl:(NSString*)url {
-    return [self queryNoBody:[NSString stringWithFormat:@"%@/control/release/", url]];
 }
 
 //get all the states of the valves
@@ -31,14 +23,41 @@
 }
 
 //get the state for a particular valve
-+(NSData*) getValve:(NSString*)url withInt:(int)idValve {
-    return [self queryNoBody:[NSString stringWithFormat:@"%@/valves/%d", url, idValve]];
++(NSData*) getValve:(NSString*)url withIDValve:(int)idValve {
+    return [self queryNoBody:[NSString stringWithFormat:@"%@/valves/%d/", url, idValve]];
 }
 
 //get the patterns of the fountain
 +(NSData*) getPatterns:(NSString*)url {
     return [self queryNoBody:[NSString stringWithFormat:@"%@/patterns/", url]];
 }
+
+#pragma mark Post functions
+
+//request control of the fountain
++(NSData*) reqControl:(NSString*)url withAPI:(NSString*)apiStr{
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/control/request/", url] withDictionary:@{ @"apikey": apiStr, @"requestedLength": [NSNumber numberWithInt:60]}];
+}
+
+//release control of the fountain
++(NSData*) relControl:(NSString*)url withAPI:(NSString*)apiStr {
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/control/release/", url] withDictionary:@{ @"apikey": apiStr}];
+}
+
++(NSData*) setValves:(NSString*)url withAPI:(NSString*)apiStr withBitmask:(int)bitInt {
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/", url] withDictionary:@{ @"apikey": apiStr, @"bitmask": [NSNumber numberWithInt:bitInt]}];
+}
+
++(NSData*) setValve:(NSString*)url withAPI:(NSString*)apiStr withIDValve:(int)idValve setToOn:(BOOL)setOn {
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/%d/", url, idValve] withDictionary:@{ @"apikey": apiStr, @"spraying": [NSNumber numberWithBool:setOn]}];
+}
+
+
++(NSData*) setPatterns:(NSString*)url withAPI:(NSString*)apiStr withIdPattern:(int)idPattern {
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/%d/", url, idPattern] withDictionary:@{ @"apikey": apiStr, @"setCurrent": [NSNumber numberWithBool:true]}];
+}
+
+#pragma mark Helper Functions
 
 //query for get requests, insert url
 +(NSData*) queryNoBody:(NSString*)urlString {
@@ -53,7 +72,7 @@
 }
 
 //qery with body (POST requests)
-+(void) queryWithBody:(NSString*)urlString withDictionary:(NSDictionary*)dict {
++(NSData*) queryWithBody:(NSString*)urlString withDictionary:(NSDictionary*)dict {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     NSURL *urlSend = [NSURL URLWithString:urlString];
     
@@ -74,13 +93,10 @@
     //set post data
     [req setHTTPBody:[dataString dataUsingEncoding:NSUTF8StringEncoding]];
     
-    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:req delegate:self];
+    NSURLResponse *urlResponse = nil;
     
-    if(conn) {
-        NSLog(@"Connection Successful");
-    } else {
-        NSLog(@"Connection could not be made");
-    }
+    //do responses synchronously for now
+    return [NSURLConnection sendSynchronousRequest:req returningResponse:&urlResponse error:nil];
 }
 
 @end

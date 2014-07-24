@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface APIFunctions : NSObject <
+@interface APIFunctions : NSObject
 
 @end
