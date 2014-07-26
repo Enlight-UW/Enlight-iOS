@@ -133,7 +133,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     CGPoint point = [[[event allTouches] anyObject] locationInView:dispView];
-    
+    tempShape = nil;
     [self setShapes:point];
 }
 
