@@ -25,9 +25,11 @@
 @end
 
 @implementation MainViewController {
+    CAShapeLayer *tempShape;
+    CGPoint prevPoint;
 }
 
-@synthesize dispView, reqContButton, buttonForShapeArray, enlightTitle;
+@synthesize dispView, reqContButton, buttonForShapeArray, enlightTitle, pan;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -47,17 +49,17 @@
     [self.view addSubview:dispView];
     
     //add buttons for the valves
-    for(int i = 0; i < [dispView.shapeArray count]; i++) {
-        
-        //grab the custom frame for the button, used to detect when button is hit
-        UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:((CAShapeLayer*)[dispView.shapeArray objectAtIndex:i]).path];
-        
-        CustomButton *button = [[CustomButton alloc] initWithFrame:dispView.frame andPath:path];
-        [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [buttonForShapeArray addObject:button];
-        [self.view addSubview:button];
-    }
+//    for(int i = 0; i < [dispView.shapeArray count]; i++) {
+//        
+//        //grab the custom frame for the button, used to detect when button is hit
+//        UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:((CAShapeLayer*)[dispView.shapeArray objectAtIndex:i]).path];
+//        
+//        CustomButton *button = [[CustomButton alloc] initWithFrame:dispView.frame andPath:path];
+//        [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchDown];
+//        
+//        [buttonForShapeArray addObject:button];
+//        [self.view addSubview:button];
+//    }
     
     //now add button on the bottom to request control
     reqContButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -92,6 +94,10 @@
     
     [self.view addSubview:enlightTitle];
     
+    //enable pan gesture recognizer
+    pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panRec:)];
+    
+    self.view.gestureRecognizers = @[pan];
 }
 
 //used to update fountain states
@@ -107,6 +113,8 @@
     //use this index to fill the path
     CAShapeLayer *shape = [dispView.shapeArray objectAtIndex:index];
     
+    tempShape = shape;
+    
     if(shape.fillColor == [UIColor clearColor].CGColor) {
         shape.fillColor = [UIColor colorWithRed:((float)((wiscRed & 0xFF0000) >> 16))/255.0 green:((float)((wiscRed & 0xFF00) >> 8))/255.0 blue:((float)(wiscRed & 0xFF))/255.0 alpha:1.0].CGColor;
     } else {
@@ -114,6 +122,56 @@
     }
 }
 
+#pragma mark Gesture Recognizers
+//gesture recognizers
+- (IBAction)panRec:(UIPanGestureRecognizer*)gesture {
+    
+    CGPoint point = [gesture locationInView:dispView];
+    [self setShapes:point];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    CGPoint point = [[[event allTouches] anyObject] locationInView:dispView];
+    
+    [self setShapes:point];
+}
+
+-(void) setShapes : (CGPoint) point {
+    //see if it is in a path
+    for(int i = 0; i < [dispView.shapeArray count]; i++) {
+        CAShapeLayer *shape = (CAShapeLayer*)[dispView.shapeArray objectAtIndex:i];
+        
+        UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:shape.path];
+        
+        if((![shape isEqual:tempShape] || ![self wasInAShape:prevPoint]) && [path containsPoint:point]) {
+            tempShape = shape;
+            
+            if(shape.fillColor == [UIColor clearColor].CGColor) {
+                shape.fillColor = [UIColor colorWithRed:((float)((wiscRed & 0xFF0000) >> 16))/255.0 green:((float)((wiscRed & 0xFF00) >> 8))/255.0 blue:((float)(wiscRed & 0xFF))/255.0 alpha:1.0].CGColor;
+            } else {
+                shape.fillColor = [UIColor clearColor].CGColor;
+            }
+        }
+    }
+    
+    prevPoint = point;
+}
+
+-(BOOL) wasInAShape : (CGPoint) point {
+    for(int i = 0; i < [dispView.shapeArray count]; i++) {
+        CAShapeLayer *shape = (CAShapeLayer*)[dispView.shapeArray objectAtIndex:i];
+        
+        UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:shape.path];
+        
+        if([path containsPoint:point]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+           
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

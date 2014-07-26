@@ -26,4 +26,6 @@
 //title of the fountain
 @property UILabel *enlightTitle;
 
+@property UIPanGestureRecognizer *pan;
+
 @end
