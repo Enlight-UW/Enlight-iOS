@@ -32,4 +32,10 @@
 //Timer to update the valve time
 @property NSTimer *updateValveTime;
 
+//shows whether or not user has control of the fountain
+@property BOOL hasControl;
+
+//text to say you are controlling the founatin
+@property UILabel *contFountainLabel;
+
 @end

@@ -31,13 +31,13 @@
     CGPoint prevPoint;
 }
 
-@synthesize dispView, reqContButton, buttonForShapeArray, enlightTitle, pan, updateValveTime;
+@synthesize dispView, reqContButton, buttonForShapeArray, enlightTitle, pan, updateValveTime, hasControl, contFountainLabel;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     //set a timer to constantly update the fountain
-    updateValveTime = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(updateFounatinValves:) userInfo:nil repeats:YES];
+    updateValveTime = [NSTimer scheduledTimerWithTimeInterval:0.7 target:self selector:@selector(updateFounatinValves:) userInfo:nil repeats:YES];
     
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -75,10 +75,21 @@
     [UIView animateWithDuration:FADE_IN_TIME animations:^{
         reqContButton.alpha = 1.0f;
     } completion:^(BOOL finished) {
-        NSLog(@"finished transition");
     }];
     
+    //set target to request control
+    [reqContButton addTarget:self action:@selector(reqControl:) forControlEvents:UIControlEventTouchDown];
+    
     [self.view addSubview:reqContButton];
+    
+    //control fountain uilabel
+    contFountainLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - (REQ_CONT_BUTTON_PADDING * 2), self.view.frame.size.width, REQ_CONT_BUTTON_PADDING)];
+    
+    [contFountainLabel setTextAlignment:NSTextAlignmentCenter];
+    
+    contFountainLabel.font = [UIFont systemFontOfSize:REQ_CONT_BUTTON_FONT];
+    [contFountainLabel setHidden:YES];
+    [self.view addSubview:contFountainLabel];
     
     //add fountain title
     enlightTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, TITLE_LABEL_PADDING, self.view.bounds.size.width, TITLE_LABEL_HEIGHT + 10)];
@@ -91,7 +102,6 @@
     [UIView animateWithDuration:FADE_IN_TIME animations:^{
         enlightTitle.alpha = 1.0f;
     } completion:^(BOOL finished) {
-        NSLog(@"finished transition");
     }];
     
     [self.view addSubview:enlightTitle];
@@ -102,6 +112,87 @@
     self.view.gestureRecognizers = @[pan];
 }
 
+#pragma mark Control Valves View
+-(IBAction)reqControl:(UIButton*)sender {
+    //request control of the fountain
+    NSDictionary* dict = [self checkQueuePosition];
+    NSNumber *num = [dict objectForKey:@"queuePosition"];
+    NSNumber *controllerID = [dict objectForKey:@"controllerID"];
+    
+    [reqContButton setHidden:YES];
+    [contFountainLabel setHidden:NO];
+    
+    //if queue position does not equal 0, set timer off to keep checking position
+    if([num intValue] != 0) {
+        [self setTextForPosition:num];
+        [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(checkPosition:) userInfo:controllerID repeats:YES];
+    } else {
+        //else start the controlling of the valves
+        [self setInControl];
+    }
+}
+
+-(IBAction)checkPosition:(NSTimer*)sender {
+    NSData *data = [APIFunctions whoIsControlling:[SecretKeys getURL]];
+    
+    NSError *error;
+    
+    NSArray *arrayOfDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+    
+    //if it did not work, just return from the timer
+    if(!arrayOfDict) {
+        return;
+    }
+    
+    for(int i = 0; i < [arrayOfDict count]; i++) {
+        NSDictionary *dict = [arrayOfDict objectAtIndex:i];
+        
+        if([[dict objectForKey:@"controllerID"] isEqualToNumber:sender.userInfo]) {
+            
+            NSNumber *num = [dict objectForKey:@"queuePosition"];
+            
+            if([num intValue] != 0) {
+                [self setTextForPosition:num];
+            } else {
+                //cancel timer
+                [sender invalidate];
+                sender = nil;
+                [self setInControl];
+            }
+            
+            return;
+        }
+        
+    }
+
+}
+
+- (void) setTextForPosition:(NSNumber*) pos {
+    [contFountainLabel setText:[NSString stringWithFormat:@"Your position in queue: %d", [pos intValue]]];
+}
+
+-(NSDictionary*) checkQueuePosition {
+    //request control of the fountain
+    NSData *data = [APIFunctions reqControl:[SecretKeys getURL] withAPI:[SecretKeys getAPIKey]];
+    
+    NSError *error;
+    
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+    
+    if (!(dict && [(NSString*)[dict objectForKey:@"success"] isEqualToString:@"true"])) {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error Requesting Control" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alert show];
+    }
+    
+    return dict;
+}
+
+-(void) setInControl {
+    hasControl = YES;
+    [contFountainLabel setText:@"You are now in control!"];
+}
+
+#pragma mark Update Fountain Valves
 //used to update fountain states
 -(IBAction) updateFounatinValves:(id)sender {
     //see what the fountain states are
@@ -110,30 +201,28 @@
     NSError *error;
     
     //parse nsdata to NSDictionary
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+    NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
     
-    if(!error) {
-        NSLog(@"Dictionary: %@", [dict description]);
+    if(jsonArray) {
+        for(NSDictionary *dict in (NSArray*)jsonArray) {
+            //get the id of it
+            NSNumber *index = (NSNumber*)[dict objectForKey:@"0"];
+            
+            NSNumber *isSpraying = (NSNumber*)[dict objectForKey:@"spraying"];
+            
+            CAShapeLayer *shape = [dispView.shapeArray objectAtIndex:[index intValue] - 1];
+            
+            //now use the index and set the shape
+            if([isSpraying boolValue]) {
+                [self setShapeColor:shape isOn:YES];
+            } else {
+                [self setShapeColor:shape isOn:NO];
+            }
+            
+        }
     }
     
     
-}
-
-//function called when valve is pressed
--(IBAction)buttonPressed:(CustomButton*)sender {
-    //find index
-    int index = (int)[buttonForShapeArray indexOfObject:sender];
-    
-    //use this index to fill the path
-    CAShapeLayer *shape = [dispView.shapeArray objectAtIndex:index];
-    
-    tempShape = shape;
-    
-    if(shape.fillColor == [UIColor clearColor].CGColor) {
-        shape.fillColor = [UIColor colorWithRed:((float)((wiscRed & 0xFF0000) >> 16))/255.0 green:((float)((wiscRed & 0xFF00) >> 8))/255.0 blue:((float)(wiscRed & 0xFF))/255.0 alpha:1.0].CGColor;
-    } else {
-        shape.fillColor = [UIColor clearColor].CGColor;
-    }
 }
 
 #pragma mark Gesture Recognizers
@@ -152,6 +241,10 @@
 }
 
 -(void) setShapes : (CGPoint) point {
+    if(!hasControl) {
+        return;
+    }
+    
     //see if it is in a path
     for(int i = 0; i < [dispView.shapeArray count]; i++) {
         CAShapeLayer *shape = (CAShapeLayer*)[dispView.shapeArray objectAtIndex:i];
@@ -162,14 +255,23 @@
             tempShape = shape;
             
             if(shape.fillColor == [UIColor clearColor].CGColor) {
-                shape.fillColor = [UIColor colorWithRed:((float)((wiscRed & 0xFF0000) >> 16))/255.0 green:((float)((wiscRed & 0xFF00) >> 8))/255.0 blue:((float)(wiscRed & 0xFF))/255.0 alpha:1.0].CGColor;
+                [self setShapeColor:shape isOn:YES];
             } else {
-                shape.fillColor = [UIColor clearColor].CGColor;
+                [self setShapeColor:shape isOn:NO];
             }
         }
     }
     
     prevPoint = point;
+}
+
+//set fill color
+-(void) setShapeColor:(CAShapeLayer*)shape isOn:(BOOL)isOn {
+    if(isOn) {
+        shape.fillColor = [UIColor colorWithRed:((float)((wiscRed & 0xFF0000) >> 16))/255.0 green:((float)((wiscRed & 0xFF00) >> 8))/255.0 blue:((float)(wiscRed & 0xFF))/255.0 alpha:1.0].CGColor;
+    } else {
+        shape.fillColor = [UIColor clearColor].CGColor;
+    }
 }
 
 -(BOOL) wasInAShape : (CGPoint) point {

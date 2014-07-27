@@ -34,6 +34,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		9F19E98F1984E746004F831E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9FC721BF1974DA270057A7C8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9FC721C61974DA270057A7C8;
+			remoteInfo = "Enlight-iOS";
+		};
 		9FC721E71974DA280057A7C8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9FC721BF1974DA270057A7C8 /* Project object */;
@@ -234,6 +241,7 @@
 			);
 			dependencies = (
 				9FC721E81974DA280057A7C8 /* PBXTargetDependency */,
+				9F19E9901984E746004F831E /* PBXTargetDependency */,
 			);
 			name = "Enlight-iOSTests";
 			productName = "Enlight-iOSTests";
@@ -326,6 +334,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		9F19E9901984E746004F831E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9FC721C61974DA270057A7C8 /* Enlight-iOS */;
+			targetProxy = 9F19E98F1984E746004F831E /* PBXContainerItemProxy */;
+		};
 		9FC721E81974DA280057A7C8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9FC721C61974DA270057A7C8 /* Enlight-iOS */;

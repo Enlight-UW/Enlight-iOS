@@ -14,47 +14,47 @@
 
 //see who is controlling the fountain and how is in queue
 +(NSData*) whoIsControlling:(NSString*)url {
-    return [self queryNoBody:[NSString stringWithFormat:@"%@/control/query/", url]];
+    return [self queryNoBody:[NSString stringWithFormat:@"%@/control/query", url]];
 }
 
 //get all the states of the valves
 +(NSData*) getValves:(NSString*)url {
-    return [self queryNoBody:[NSString stringWithFormat:@"%@/valves/", url]];
+    return [self queryNoBody:[NSString stringWithFormat:@"%@/valves", url]];
 }
 
 //get the state for a particular valve
 +(NSData*) getValve:(NSString*)url withIDValve:(int)idValve {
-    return [self queryNoBody:[NSString stringWithFormat:@"%@/valves/%d/", url, idValve]];
+    return [self queryNoBody:[NSString stringWithFormat:@"%@/valves/%d", url, idValve]];
 }
 
 //get the patterns of the fountain
 +(NSData*) getPatterns:(NSString*)url {
-    return [self queryNoBody:[NSString stringWithFormat:@"%@/patterns/", url]];
+    return [self queryNoBody:[NSString stringWithFormat:@"%@/patterns", url]];
 }
 
 #pragma mark Post functions
 
 //request control of the fountain
 +(NSData*) reqControl:(NSString*)url withAPI:(NSString*)apiStr {
-    return [self queryWithBody:[NSString stringWithFormat:@"%@/control/request/", url] withDictionary:@{ @"apikey": apiStr, @"requestedLength": [NSNumber numberWithInt:60]}];
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/control/request", url] withDictionary:@{ @"apikey": apiStr, @"requestedLength": [NSNumber numberWithInt:60]}];
 }
 
 //release control of the fountain
 +(NSData*) relControl:(NSString*)url withAPI:(NSString*)apiStr {
-    return [self queryWithBody:[NSString stringWithFormat:@"%@/control/release/", url] withDictionary:@{ @"apikey": apiStr}];
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/control/release", url] withDictionary:@{ @"apikey": apiStr}];
 }
 
 +(NSData*) setValves:(NSString*)url withAPI:(NSString*)apiStr withBitmask:(int)bitInt {
-    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/", url] withDictionary:@{ @"apikey": apiStr, @"bitmask": [NSNumber numberWithInt:bitInt]}];
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves", url] withDictionary:@{ @"apikey": apiStr, @"bitmask": [NSNumber numberWithInt:bitInt]}];
 }
 
 +(NSData*) setValve:(NSString*)url withAPI:(NSString*)apiStr withIDValve:(int)idValve setToOn:(BOOL)setOn {
-    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/%d/", url, idValve] withDictionary:@{ @"apikey": apiStr, @"spraying": [NSNumber numberWithBool:setOn]}];
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/%d", url, idValve] withDictionary:@{ @"apikey": apiStr, @"spraying": [NSNumber numberWithBool:setOn]}];
 }
 
 
 +(NSData*) setPatterns:(NSString*)url withAPI:(NSString*)apiStr withIdPattern:(int)idPattern {
-    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/%d/", url, idPattern] withDictionary:@{ @"apikey": apiStr, @"setCurrent": [NSNumber numberWithBool:true]}];
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/%d", url, idPattern] withDictionary:@{ @"apikey": apiStr, @"setCurrent": [NSNumber numberWithBool:true]}];
 }
 
 #pragma mark Helper Functions
@@ -80,15 +80,24 @@
     [req setHTTPMethod:@"POST"];
     
     //set up string from dictionary
-    NSString *dataString = [[NSString alloc] init];
-    for(id key in dict) {
+    NSArray *arrayKeys = [dict allKeys];
+    NSString *dataString = @"{";
+    for(int i = 0; i < [arrayKeys count]; i++) {
+        id key = [arrayKeys objectAtIndex:i];
         id value = [dict objectForKey:key];
-        NSString *newData =  [NSString stringWithFormat:@"&%@=%@", key, value];
+        NSString *newData =  [NSString stringWithFormat:@" \"%@\":\"%@\"", key, value];
         dataString = [dataString stringByAppendingString: newData];
+        
+        //if last object in array, append bracket, else append comma
+        if(i == [arrayKeys count] - 1) {
+            dataString = [dataString stringByAppendingString:@"}"];
+        } else {
+            dataString = [dataString stringByAppendingString:@","];
+        }
     }
     
     //set reqest type
-    [req setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    [req setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
     //set post data
     [req setHTTPBody:[dataString dataUsingEncoding:NSUTF8StringEncoding]];
