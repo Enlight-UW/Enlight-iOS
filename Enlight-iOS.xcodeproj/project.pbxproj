@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9F36F10A19763177000855C3 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F36F10919763177000855C3 /* MainViewController.m */; };
+		9F3B1C3819849E4E000F4FE1 /* SecretKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B1C3719849E4E000F4FE1 /* SecretKeys.m */; };
 		9F440C291980CFDC002BF743 /* enlighticon_29.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C221980CFDC002BF743 /* enlighticon_29.png */; };
 		9F440C2A1980CFDC002BF743 /* enlighticon_40.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C231980CFDC002BF743 /* enlighticon_40.png */; };
 		9F440C2B1980CFDC002BF743 /* enlighticon_58.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C241980CFDC002BF743 /* enlighticon_58.png */; };
@@ -45,6 +46,8 @@
 /* Begin PBXFileReference section */
 		9F36F10819763177000855C3 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		9F36F10919763177000855C3 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		9F3B1C3619849E4E000F4FE1 /* SecretKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecretKeys.h; sourceTree = "<group>"; };
+		9F3B1C3719849E4E000F4FE1 /* SecretKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecretKeys.m; sourceTree = "<group>"; };
 		9F440C221980CFDC002BF743 /* enlighticon_29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_29.png; sourceTree = "<group>"; };
 		9F440C231980CFDC002BF743 /* enlighticon_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_40.png; sourceTree = "<group>"; };
 		9F440C241980CFDC002BF743 /* enlighticon_58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_58.png; sourceTree = "<group>"; };
@@ -162,6 +165,8 @@
 				9FF6B70B197F71F8008F4EDD /* Constants.h */,
 				9FF6B70C197F7648008F4EDD /* APIFunctions.h */,
 				9FF6B70D197F7648008F4EDD /* APIFunctions.m */,
+				9F3B1C3619849E4E000F4FE1 /* SecretKeys.h */,
+				9F3B1C3719849E4E000F4FE1 /* SecretKeys.m */,
 			);
 			path = "Enlight-iOS";
 			sourceTree = "<group>";
@@ -300,6 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FD55341197A4A3000F45C76 /* CustomButton.m in Sources */,
+				9F3B1C3819849E4E000F4FE1 /* SecretKeys.m in Sources */,
 				9FC721DB1974DA280057A7C8 /* AppDelegate.m in Sources */,
 				9FF6B70E197F7648008F4EDD /* APIFunctions.m in Sources */,
 				9FD5533B1979EB4C00F45C76 /* FountainDisplayView.m in Sources */,

@@ -35,7 +35,7 @@
 #pragma mark Post functions
 
 //request control of the fountain
-+(NSData*) reqControl:(NSString*)url withAPI:(NSString*)apiStr{
++(NSData*) reqControl:(NSString*)url withAPI:(NSString*)apiStr {
     return [self queryWithBody:[NSString stringWithFormat:@"%@/control/request/", url] withDictionary:@{ @"apikey": apiStr, @"requestedLength": [NSNumber numberWithInt:60]}];
 }
 

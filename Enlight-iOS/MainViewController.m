@@ -8,14 +8,16 @@
 
 #import "MainViewController.h"
 #import "Constants.h"
+#import "APIFunctions.h"
+#import "SecretKeys.h"
 
 //request control button defines
-#define REQ_CONT_BUTTON_PADDING 50
+#define REQ_CONT_BUTTON_PADDING 30
 #define REQ_CONT_BUTTON_WIDTH 200
 #define REQ_CONT_BUTTON_FONT 25
 
 //enlight title defines
-#define TITLE_LABEL_PADDING 50
+#define TITLE_LABEL_PADDING 30
 #define TITLE_LABEL_HEIGHT 40
 
 //fade in define
@@ -29,13 +31,13 @@
     CGPoint prevPoint;
 }
 
-@synthesize dispView, reqContButton, buttonForShapeArray, enlightTitle, pan;
+@synthesize dispView, reqContButton, buttonForShapeArray, enlightTitle, pan, updateValveTime;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     //set a timer to constantly update the fountain
-    [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(updateFounatinValves:) userInfo:nil repeats:YES];
+    updateValveTime = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(updateFounatinValves:) userInfo:nil repeats:YES];
     
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -102,6 +104,18 @@
 
 //used to update fountain states
 -(IBAction) updateFounatinValves:(id)sender {
+    //see what the fountain states are
+    NSData *data = [APIFunctions getValves:[SecretKeys getURL]];
+    
+    NSError *error;
+    
+    //parse nsdata to NSDictionary
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+    
+    if(!error) {
+        NSLog(@"Dictionary: %@", [dict description]);
+    }
+    
     
 }
 

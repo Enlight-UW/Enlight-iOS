@@ -26,6 +26,10 @@
 //title of the fountain
 @property UILabel *enlightTitle;
 
+//pan gesture so that one can slide their finger and toggle their valve states
 @property UIPanGestureRecognizer *pan;
+
+//Timer to update the valve time
+@property NSTimer *updateValveTime;
 
 @end
