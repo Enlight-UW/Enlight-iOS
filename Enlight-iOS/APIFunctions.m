@@ -13,66 +13,60 @@
 #pragma mark Get Functions
 
 //see who is controlling the fountain and how is in queue
-+(NSData*) whoIsControlling:(NSString*)url {
++(NSURLRequest*) whoIsControlling:(NSString*)url {
     return [self queryNoBody:[NSString stringWithFormat:@"%@/control/query", url]];
 }
 
 //get all the states of the valves
-+(NSData*) getValves:(NSString*)url {
++(NSURLRequest*) getValves:(NSString*)url {
     return [self queryNoBody:[NSString stringWithFormat:@"%@/valves", url]];
 }
 
 //get the state for a particular valve
-+(NSData*) getValve:(NSString*)url withIDValve:(int)idValve {
++(NSURLRequest*) getValve:(NSString*)url withIDValve:(int)idValve {
     return [self queryNoBody:[NSString stringWithFormat:@"%@/valves/%d", url, idValve]];
 }
 
 //get the patterns of the fountain
-+(NSData*) getPatterns:(NSString*)url {
++(NSURLRequest*) getPatterns:(NSString*)url {
     return [self queryNoBody:[NSString stringWithFormat:@"%@/patterns", url]];
 }
 
 #pragma mark Post functions
-
-//request control of the fountain
-+(NSData*) reqControl:(NSString*)url withAPI:(NSString*)apiStr {
-    return [self queryWithBody:[NSString stringWithFormat:@"%@/control/request", url] withDictionary:@{ @"apikey": apiStr, @"requestedLength": [NSNumber numberWithInt:60]}];
-}
-
-//release control of the fountain
-+(NSData*) relControl:(NSString*)url withAPI:(NSString*)apiStr {
++(NSMutableURLRequest*) reqControl:(NSString*)url withAPI:(NSString*)apiStr {
     return [self queryWithBody:[NSString stringWithFormat:@"%@/control/release", url] withDictionary:@{ @"apikey": apiStr}];
 }
 
-+(NSData*) setValves:(NSString*)url withAPI:(NSString*)apiStr withBitmask:(int)bitInt {
+//release control of the fountain
++(NSMutableURLRequest*) relControl:(NSString*)url withAPI:(NSString*)apiStr {
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/control/release", url] withDictionary:@{ @"apikey": apiStr}];
+}
+
++(NSMutableURLRequest*) setValves:(NSString*)url withAPI:(NSString*)apiStr withBitmask:(int)bitInt {
     return [self queryWithBody:[NSString stringWithFormat:@"%@/valves", url] withDictionary:@{ @"apikey": apiStr, @"bitmask": [NSNumber numberWithInt:bitInt]}];
 }
 
-+(NSData*) setValve:(NSString*)url withAPI:(NSString*)apiStr withIDValve:(int)idValve setToOn:(BOOL)setOn {
++(NSMutableURLRequest*) setValve:(NSString*)url withAPI:(NSString*)apiStr withIDValve:(int)idValve setToOn:(BOOL)setOn {
     return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/%d", url, idValve] withDictionary:@{ @"apikey": apiStr, @"spraying": [NSNumber numberWithBool:setOn]}];
 }
 
 
-+(NSData*) setPatterns:(NSString*)url withAPI:(NSString*)apiStr withIdPattern:(int)idPattern {
++(NSMutableURLRequest*) setPatterns:(NSString*)url withAPI:(NSString*)apiStr withIdPattern:(int)idPattern {
     return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/%d", url, idPattern] withDictionary:@{ @"apikey": apiStr, @"setCurrent": [NSNumber numberWithBool:true]}];
 }
 
 #pragma mark Helper Functions
 
 //query for get requests, insert url
-+(NSData*) queryNoBody:(NSString*)urlString {
++(NSURLRequest*) queryNoBody:(NSString*)urlString {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     NSURL *urlSend = [NSURL URLWithString:urlString];
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    NSData *data = [NSURLConnection sendSynchronousRequest:[[NSURLRequest alloc] initWithURL:urlSend] returningResponse:&urlResponse error:&requestError];
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    return data;
+    return [[NSURLRequest alloc] initWithURL:urlSend];
 }
 
 //qery with body (POST requests)
-+(NSData*) queryWithBody:(NSString*)urlString withDictionary:(NSDictionary*)dict {
++(NSMutableURLRequest*) queryWithBody:(NSString*)urlString withDictionary:(NSDictionary*)dict {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     NSURL *urlSend = [NSURL URLWithString:urlString];
     
@@ -102,10 +96,7 @@
     //set post data
     [req setHTTPBody:[dataString dataUsingEncoding:NSUTF8StringEncoding]];
     
-    NSURLResponse *urlResponse = nil;
-    
-    //do responses synchronously for now
-    return [NSURLConnection sendSynchronousRequest:req returningResponse:&urlResponse error:nil];
+    return req;
 }
 
 @end

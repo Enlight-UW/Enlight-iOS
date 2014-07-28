@@ -10,14 +10,17 @@
 
 @interface APIFunctions : NSObject
 
-+(NSData*) whoIsControlling:(NSString*)url;
-+(NSData*) getValves:(NSString*)url;
-+(NSData*) getValve:(NSString*)url withIDValve:(int)idValve;
-+(NSData*) getPatterns:(NSString*)url;
-+(NSData*) reqControl:(NSString*)url withAPI:(NSString*)apiStr;
-+(NSData*) relControl:(NSString*)url withAPI:(NSString*)apiStr;
-+(NSData*) setValves:(NSString*)url withAPI:(NSString*)apiStr withBitmask:(int)bitInt;
-+(NSData*) setValve:(NSString*)url withAPI:(NSString*)apiStr withIDValve:(int)idValve setToOn:(BOOL)setOn;
-+(NSData*) setPatterns:(NSString*)url withAPI:(NSString*)apiStr withIdPattern:(int)idPattern;
+//Get Functions
++(NSURLRequest*) whoIsControlling:(NSString*)url;
++(NSURLRequest*) getValves:(NSString*)url;
++(NSURLRequest*) getValve:(NSString*)url withIDValve:(int)idValve;
++(NSURLRequest*) getPatterns:(NSString*)url;
+
+//Post Functions
++(NSMutableURLRequest*) reqControl:(NSString*)url withAPI:(NSString*)apiStr;
++(NSMutableURLRequest*) relControl:(NSString*)url withAPI:(NSString*)apiStr;
++(NSMutableURLRequest*) setValves:(NSString*)url withAPI:(NSString*)apiStr withBitmask:(int)bitInt;
++(NSMutableURLRequest*) setValve:(NSString*)url withAPI:(NSString*)apiStr withIDValve:(int)idValve setToOn:(BOOL)setOn;
++(NSMutableURLRequest*) setPatterns:(NSString*)url withAPI:(NSString*)apiStr withIdPattern:(int)idPattern;
 
 @end

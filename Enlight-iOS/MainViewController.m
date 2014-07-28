@@ -31,10 +31,12 @@
     CGPoint prevPoint;
 }
 
-@synthesize dispView, reqContButton, buttonForShapeArray, enlightTitle, pan, updateValveTime, hasControl, contFountainLabel;
+@synthesize dispView, reqContButton, buttonForShapeArray, enlightTitle, pan, updateValveTime, hasControl, contFountainLabel, queue;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    queue = [[NSOperationQueue alloc] init];
     
     //set a timer to constantly update the fountain
     updateValveTime = [NSTimer scheduledTimerWithTimeInterval:0.7 target:self selector:@selector(updateFounatinValves:) userInfo:nil repeats:YES];
@@ -115,136 +117,189 @@
 #pragma mark Control Valves View
 -(IBAction)reqControl:(UIButton*)sender {
     //request control of the fountain
-    NSDictionary* dict = [self checkQueuePosition];
-    NSNumber *num = [dict objectForKey:@"queuePosition"];
-    NSNumber *controllerID = [dict objectForKey:@"controllerID"];
+    NSMutableURLRequest *req = [APIFunctions reqControl:[SecretKeys getURL] withAPI:[SecretKeys getAPIKey]];
     
-    [reqContButton setHidden:YES];
-    [contFountainLabel setHidden:NO];
-    
-    //if queue position does not equal 0, set timer off to keep checking position
-    if([num intValue] != 0) {
-        [self setTextForPosition:num];
-        [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(checkPosition:) userInfo:controllerID repeats:YES];
-    } else {
-        //else start the controlling of the valves
-        [self setInControl];
-    }
-}
-
--(IBAction)checkPosition:(NSTimer*)sender {
-    NSData *data = [APIFunctions whoIsControlling:[SecretKeys getURL]];
-    
-    NSError *error;
-    
-    NSArray *arrayOfDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-    
-    //if it did not work, just return from the timer
-    if(!arrayOfDict) {
-        return;
-    }
-    
-    for(int i = 0; i < [arrayOfDict count]; i++) {
-        NSDictionary *dict = [arrayOfDict objectAtIndex:i];
+    [NSURLConnection sendAsynchronousRequest:req queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         
-        if([[dict objectForKey:@"controllerID"] isEqualToNumber:sender.userInfo]) {
-            
-            NSNumber *num = [dict objectForKey:@"queuePosition"];
-            
-            if([num intValue] != 0) {
-                [self setTextForPosition:num];
-            } else {
-                //cancel timer
-                [sender invalidate];
-                sender = nil;
-                [self setInControl];
-            }
-            
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        //if there is an error, return
+        if(error) {
             return;
         }
         
-    }
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        
+        if (!(dict && [(NSString*)[dict objectForKey:@"success"] isEqualToString:@"true"])) {
+            
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [self showAlert:@"Error Requesting Control"];
+            }];
+        }
+        
+        //if dictionary is null, return error
+        if(!dict) {
+            return;
+        }
+        
+        //request control of the fountain
+        NSNumber *num = [dict objectForKey:@"queuePosition"];
+        NSNumber *controllerID = [dict objectForKey:@"controllerID"];
+        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [reqContButton setHidden:YES];
+            [contFountainLabel setHidden:NO];
+            
+            //if queue position does not equal 0, set timer off to keep checking position
+            if([num intValue] != 0) {
+                [self setTextForPosition:num];
+                [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(checkPosition:) userInfo:controllerID repeats:YES];
+            } else {
+                //else start the controlling of the valves
+                [self setInControl];
+            }
+        }];
+    }];
+}
 
+-(IBAction)checkPosition:(NSTimer*)sender {
+    NSURLRequest *req = [APIFunctions whoIsControlling:[SecretKeys getURL]];
+    
+    [NSURLConnection sendAsynchronousRequest:req queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        NSArray *arrayOfDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+        
+        //if it did not work, just return from the timer
+        if(!arrayOfDict) {
+            return;
+        }
+        
+        for(int i = 0; i < [arrayOfDict count]; i++) {
+            NSDictionary *dict = [arrayOfDict objectAtIndex:i];
+            
+            if([[dict objectForKey:@"controllerID"] isEqualToNumber:sender.userInfo]) {
+                
+                NSNumber *num = [dict objectForKey:@"queuePosition"];
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    if([num intValue] != 0) {
+                        [self setTextForPosition:num];
+                    } else {
+                        //cancel timer
+                        [sender invalidate];
+                        [self setInControl];
+                    }
+                }];
+                
+                return;
+            }
+        }
+        
+    }];
 }
 
 - (void) setTextForPosition:(NSNumber*) pos {
     [contFountainLabel setText:[NSString stringWithFormat:@"Your position in queue: %d", [pos intValue]]];
 }
 
--(NSDictionary*) checkQueuePosition {
-    //request control of the fountain
-    NSData *data = [APIFunctions reqControl:[SecretKeys getURL] withAPI:[SecretKeys getAPIKey]];
-    
-    NSError *error;
-    
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-    
-    if (!(dict && [(NSString*)[dict objectForKey:@"success"] isEqualToString:@"true"])) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error Requesting Control" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-        [alert show];
-    }
-    
-    return dict;
-}
-
 -(void) setInControl {
     hasControl = YES;
     [contFountainLabel setText:@"You are now in control!"];
+    [updateValveTime invalidate];
+    updateValveTime = nil;
 }
 
 #pragma mark Update Fountain Valves
 //used to update fountain states
 -(IBAction) updateFounatinValves:(id)sender {
     //see what the fountain states are
-    NSData *data = [APIFunctions getValves:[SecretKeys getURL]];
+    NSURLRequest *req = [APIFunctions getValves:[SecretKeys getURL]];
     
-    NSError *error;
-    
-    //parse nsdata to NSDictionary
-    NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-    
-    if(jsonArray) {
-        for(NSDictionary *dict in (NSArray*)jsonArray) {
-            //get the id of it
-            NSNumber *index = (NSNumber*)[dict objectForKey:@"0"];
-            
-            NSNumber *isSpraying = (NSNumber*)[dict objectForKey:@"spraying"];
-            
-            CAShapeLayer *shape = [dispView.shapeArray objectAtIndex:[index intValue] - 1];
-            
-            //now use the index and set the shape
-            if([isSpraying boolValue]) {
-                [self setShapeColor:shape isOn:YES];
-            } else {
-                [self setShapeColor:shape isOn:NO];
-            }
-            
+    [NSURLConnection sendAsynchronousRequest:req queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        //if there is an error, return
+        if(error) {
+            return;
         }
-    }
-    
-    
+        
+        //parse nsdata to NSDictionary
+        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+        
+        if(jsonArray) {
+            for(NSDictionary *dict in (NSArray*)jsonArray) {
+                //get the id of it
+                NSNumber *index = (NSNumber*)[dict objectForKey:@"0"];
+                
+                NSNumber *isSpraying = (NSNumber*)[dict objectForKey:@"spraying"];
+                
+                CAShapeLayer *shape = [dispView.shapeArray objectAtIndex:[index intValue] - 1];
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    //go to main thread for UI
+                    if([isSpraying boolValue]) {
+                        [self setShapeColor:shape isOn:YES];
+                    } else {
+                        [self setShapeColor:shape isOn:NO];
+                    }
+                }];
+            }
+        }
+    }];
 }
 
 #pragma mark Gesture Recognizers
 //gesture recognizers
 - (IBAction)panRec:(UIPanGestureRecognizer*)gesture {
+    if(!hasControl) {
+        return;
+    }
     
     CGPoint point = [gesture locationInView:dispView];
     [self setShapes:point];
+    
+    if(gesture.state == UIGestureRecognizerStateEnded) {
+        //now call the bitmask since we now know that all states have been set
+        //get bitmask of the fountain
+        NSMutableURLRequest *req = [APIFunctions setValves:[SecretKeys getURL] withAPI:[SecretKeys getAPIKey] withBitmask:[self getBitmask]];
+        
+        [NSURLConnection sendAsynchronousRequest:req queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
+            if(error) {
+                //show error message and return
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [self showAlert:[error debugDescription]];
+                }];
+                return;
+            }
+            
+            //parse data
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+            
+            if(dict) {
+                NSNumber *successful = [dict objectForKey:@"success"];
+                if(![successful boolValue]) {
+                    [self showAlert:@"Error Setting Valve States"];
+                }
+            }
+        }];
+    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if(!hasControl) {
+        return;
+    }
+    
     CGPoint point = [[[event allTouches] anyObject] locationInView:dispView];
     tempShape = nil;
     [self setShapes:point];
 }
 
+#pragma mark Set Shapes
 -(void) setShapes : (CGPoint) point {
-    if(!hasControl) {
-        return;
-    }
-    
     //see if it is in a path
     for(int i = 0; i < [dispView.shapeArray count]; i++) {
         CAShapeLayer *shape = (CAShapeLayer*)[dispView.shapeArray objectAtIndex:i];
@@ -286,6 +341,28 @@
     }
     
     return NO;
+}
+
+#pragma mark Helper Functions
+//show alert view
+-(void) showAlert:(NSString*)title {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:title message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alert show];
+    }];
+}
+
+-(int) getBitmask {
+    int mask = 0;
+    for(int i = 0; i < [dispView.shapeArray count]; i++) {
+        CAShapeLayer *shape = (CAShapeLayer*)[dispView.shapeArray objectAtIndex:i];
+        
+        //if that valve has been set
+        if(!(shape.fillColor == [UIColor clearColor].CGColor)) {
+            mask += pow(2, i);
+        }
+    }
+    return mask;
 }
            
 - (void)didReceiveMemoryWarning {

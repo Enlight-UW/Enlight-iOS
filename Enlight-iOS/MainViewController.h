@@ -38,4 +38,6 @@
 //text to say you are controlling the founatin
 @property UILabel *contFountainLabel;
 
+@property NSOperationQueue *queue;
+
 @end
