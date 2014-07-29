@@ -31,7 +31,7 @@
     CGPoint prevPoint;
 }
 
-@synthesize dispView, reqContButton, buttonForShapeArray, enlightTitle, pan, updateValveTime, hasControl, contFountainLabel, queue;
+@synthesize dispView, reqContButton, buttonForShapeArray, enlightTitle, pan, updateValveTime, hasControl, contFountainLabel, queue, loadingReqCont;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -52,18 +52,6 @@
     
     [self.view addSubview:dispView];
     
-    //add buttons for the valves
-//    for(int i = 0; i < [dispView.shapeArray count]; i++) {
-//        
-//        //grab the custom frame for the button, used to detect when button is hit
-//        UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:((CAShapeLayer*)[dispView.shapeArray objectAtIndex:i]).path];
-//        
-//        CustomButton *button = [[CustomButton alloc] initWithFrame:dispView.frame andPath:path];
-//        [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchDown];
-//        
-//        [buttonForShapeArray addObject:button];
-//        [self.view addSubview:button];
-//    }
     
     //now add button on the bottom to request control
     reqContButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -76,7 +64,6 @@
     //fade in uibutton
     [UIView animateWithDuration:FADE_IN_TIME animations:^{
         reqContButton.alpha = 1.0f;
-    } completion:^(BOOL finished) {
     }];
     
     //set target to request control
@@ -93,6 +80,12 @@
     [contFountainLabel setHidden:YES];
     [self.view addSubview:contFountainLabel];
     
+    //activity indicator set up
+    loadingReqCont = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    loadingReqCont.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2, [contFountainLabel frame].origin.y + ([contFountainLabel frame].size.height / 2));
+    [loadingReqCont setHidesWhenStopped:YES];
+    [self.view addSubview:loadingReqCont];
+    
     //add fountain title
     enlightTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, TITLE_LABEL_PADDING, self.view.bounds.size.width, TITLE_LABEL_HEIGHT + 10)];
     enlightTitle.textAlignment = NSTextAlignmentCenter;
@@ -103,7 +96,6 @@
     //fade in the title
     [UIView animateWithDuration:FADE_IN_TIME animations:^{
         enlightTitle.alpha = 1.0f;
-    } completion:^(BOOL finished) {
     }];
     
     [self.view addSubview:enlightTitle];
@@ -143,58 +135,51 @@
         }
         
         //request control of the fountain
-        NSNumber *num = [dict objectForKey:@"queuePosition"];
         NSNumber *controllerID = [dict objectForKey:@"controllerID"];
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            //start timer to check for position
+            [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkPosition:) userInfo:controllerID repeats:YES];
+            
             [reqContButton setHidden:YES];
             [contFountainLabel setHidden:NO];
-            
-            //if queue position does not equal 0, set timer off to keep checking position
-            if([num intValue] != 0) {
-                [self setTextForPosition:num];
-                [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(checkPosition:) userInfo:controllerID repeats:YES];
-            } else {
-                //else start the controlling of the valves
-                [self setInControl];
-            }
+            [loadingReqCont startAnimating];
         }];
     }];
 }
 
 -(IBAction)checkPosition:(NSTimer*)sender {
-    NSURLRequest *req = [APIFunctions whoIsControlling:[SecretKeys getURL]];
+    NSNumber *controllerID = (NSNumber*)sender.userInfo;
+    
+    NSMutableURLRequest *req = [APIFunctions queryControl:[SecretKeys getURL] withAPI:[SecretKeys getAPIKey] withControllerID:controllerID];
     
     [NSURLConnection sendAsynchronousRequest:req queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
-        NSArray *arrayOfDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
         
         //if it did not work, just return from the timer
-        if(!arrayOfDict) {
+        if(!dict) {
             return;
         }
         
-        for(int i = 0; i < [arrayOfDict count]; i++) {
-            NSDictionary *dict = [arrayOfDict objectAtIndex:i];
+        //check position in queue
+        NSNumber *successful = [dict objectForKey:@"success"];
+        if([successful boolValue]) {
+            //check queue position
+            NSNumber *queuePos = [dict objectForKey:@"trueQueuePosition"];
             
-            if([[dict objectForKey:@"controllerID"] isEqualToNumber:sender.userInfo]) {
-                
-                NSNumber *num = [dict objectForKey:@"queuePosition"];
-                
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    if([num intValue] != 0) {
-                        [self setTextForPosition:num];
-                    } else {
-                        //cancel timer
-                        [sender invalidate];
-                        [self setInControl];
-                    }
-                }];
-                
-                return;
-            }
+            //if queue position is 0, allow user to control the fountain
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [loadingReqCont stopAnimating];
+                if([queuePos intValue] == 0) {
+                    [self setInControl];
+                } else {
+                    [self setTextForPosition:queuePos];
+                }
+            }];
+            
         }
         
     }];
@@ -207,8 +192,12 @@
 -(void) setInControl {
     hasControl = YES;
     [contFountainLabel setText:@"You are now in control!"];
+    
+    //invalidate the updating timer so that user can see changes that they make
     [updateValveTime invalidate];
     updateValveTime = nil;
+    
+    
 }
 
 #pragma mark Update Fountain Valves

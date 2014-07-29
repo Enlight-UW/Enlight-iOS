@@ -33,6 +33,10 @@
 }
 
 #pragma mark Post functions
++(NSMutableURLRequest*) queryControl:(NSString*)url withAPI:(NSString*)apiStr withControllerID:(NSNumber*)controllerID {
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/control/query", url] withDictionary:@{@"apikey": apiStr, @"controllerID" : controllerID}];
+}
+
 +(NSMutableURLRequest*) reqControl:(NSString*)url withAPI:(NSString*)apiStr {
     return [self queryWithBody:[NSString stringWithFormat:@"%@/control/release", url] withDictionary:@{ @"apikey": apiStr}];
 }

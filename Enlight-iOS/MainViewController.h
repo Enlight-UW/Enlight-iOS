@@ -38,6 +38,10 @@
 //text to say you are controlling the founatin
 @property UILabel *contFountainLabel;
 
+//queue for asynchronous API calls
 @property NSOperationQueue *queue;
+
+//loading activity indicator for loading the activity indicator
+@property UIActivityIndicatorView *loadingReqCont;
 
 @end

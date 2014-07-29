@@ -17,6 +17,7 @@
 +(NSURLRequest*) getPatterns:(NSString*)url;
 
 //Post Functions
++(NSMutableURLRequest*) queryControl:(NSString*)url withAPI:(NSString*)apiStr withControllerID:(NSNumber*)controllerID;
 +(NSMutableURLRequest*) reqControl:(NSString*)url withAPI:(NSString*)apiStr;
 +(NSMutableURLRequest*) relControl:(NSString*)url withAPI:(NSString*)apiStr;
 +(NSMutableURLRequest*) setValves:(NSString*)url withAPI:(NSString*)apiStr withBitmask:(int)bitInt;
