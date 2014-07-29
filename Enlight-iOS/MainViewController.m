@@ -12,7 +12,7 @@
 #import "SecretKeys.h"
 
 //request control button defines
-#define REQ_CONT_BUTTON_PADDING 30
+#define REQ_CONT_BUTTON_PADDING 30 + 49
 #define REQ_CONT_BUTTON_WIDTH 200
 #define REQ_CONT_BUTTON_FONT 25
 
@@ -31,11 +31,14 @@
     CGPoint prevPoint;
 }
 
-@synthesize dispView, reqContButton, buttonForShapeArray, enlightTitle, pan, updateValveTime, hasControl, contFountainLabel, queue, loadingReqCont;
+@synthesize dispView, reqContButton, buttonForShapeArray, pan, updateValveTime, hasControl, contFountainLabel, queue, loadingReqCont;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"Control Fountain";
+    
+    //set up queue for asynchronous calls to the API
     queue = [[NSOperationQueue alloc] init];
     
     //set a timer to constantly update the fountain
@@ -85,20 +88,6 @@
     loadingReqCont.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2, [contFountainLabel frame].origin.y + ([contFountainLabel frame].size.height / 2));
     [loadingReqCont setHidesWhenStopped:YES];
     [self.view addSubview:loadingReqCont];
-    
-    //add fountain title
-    enlightTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, TITLE_LABEL_PADDING, self.view.bounds.size.width, TITLE_LABEL_HEIGHT + 10)];
-    enlightTitle.textAlignment = NSTextAlignmentCenter;
-    [enlightTitle setFont:[UIFont systemFontOfSize:TITLE_LABEL_HEIGHT]];
-    enlightTitle.alpha = 0.0f;
-    [enlightTitle setText:@"Enlight Fountain"];
-    
-    //fade in the title
-    [UIView animateWithDuration:FADE_IN_TIME animations:^{
-        enlightTitle.alpha = 1.0f;
-    }];
-    
-    [self.view addSubview:enlightTitle];
     
     //enable pan gesture recognizer
     pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panRec:)];

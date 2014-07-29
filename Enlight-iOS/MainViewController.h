@@ -23,9 +23,6 @@
 //button array corresponding the fountain image
 @property NSMutableArray *buttonForShapeArray;
 
-//title of the fountain
-@property UILabel *enlightTitle;
-
 //pan gesture so that one can slide their finger and toggle their valve states
 @property UIPanGestureRecognizer *pan;
 

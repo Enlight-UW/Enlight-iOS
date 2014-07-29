@@ -16,6 +16,7 @@
 		9F440C2D1980CFDC002BF743 /* enlighticon_80.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C261980CFDC002BF743 /* enlighticon_80.png */; };
 		9F440C2E1980CFDC002BF743 /* enlighticon_120.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C271980CFDC002BF743 /* enlighticon_120.png */; };
 		9F440C2F1980CFDC002BF743 /* enlighticon_152.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C281980CFDC002BF743 /* enlighticon_152.png */; };
+		9F92AC1719874BE000EDA701 /* TabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F92AC1619874BE000EDA701 /* TabViewController.m */; };
 		9FC721CB1974DA280057A7C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CA1974DA280057A7C8 /* Foundation.framework */; };
 		9FC721CD1974DA280057A7C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CC1974DA280057A7C8 /* CoreGraphics.framework */; };
 		9FC721CF1974DA280057A7C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CE1974DA280057A7C8 /* UIKit.framework */; };
@@ -62,6 +63,8 @@
 		9F440C261980CFDC002BF743 /* enlighticon_80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_80.png; sourceTree = "<group>"; };
 		9F440C271980CFDC002BF743 /* enlighticon_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_120.png; sourceTree = "<group>"; };
 		9F440C281980CFDC002BF743 /* enlighticon_152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_152.png; sourceTree = "<group>"; };
+		9F92AC1519874BE000EDA701 /* TabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewController.h; sourceTree = "<group>"; };
+		9F92AC1619874BE000EDA701 /* TabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewController.m; sourceTree = "<group>"; };
 		9FC721C71974DA280057A7C8 /* Enlight-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Enlight-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FC721CA1974DA280057A7C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9FC721CC1974DA280057A7C8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -174,6 +177,8 @@
 				9FF6B70D197F7648008F4EDD /* APIFunctions.m */,
 				9F0CBA3619872AF600BC2CF1 /* SecretKeys.h */,
 				9F0CBA3719872AF600BC2CF1 /* SecretKeys.m */,
+				9F92AC1519874BE000EDA701 /* TabViewController.h */,
+				9F92AC1619874BE000EDA701 /* TabViewController.m */,
 			);
 			path = "Enlight-iOS";
 			sourceTree = "<group>";
@@ -318,6 +323,7 @@
 				9FD55341197A4A3000F45C76 /* CustomButton.m in Sources */,
 				9F0CBA3819872AF600BC2CF1 /* SecretKeys.m in Sources */,
 				9FC721DB1974DA280057A7C8 /* AppDelegate.m in Sources */,
+				9F92AC1719874BE000EDA701 /* TabViewController.m in Sources */,
 				9FF6B70E197F7648008F4EDD /* APIFunctions.m in Sources */,
 				9FD5533B1979EB4C00F45C76 /* FountainDisplayView.m in Sources */,
 				9F36F10A19763177000855C3 /* MainViewController.m in Sources */,
