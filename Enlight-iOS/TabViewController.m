@@ -28,7 +28,12 @@
     
     //set up main view controller
     MainViewController *mainVC = [[MainViewController alloc] init];
-    mainVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Control" image:nil tag:0];
+    UIImage *contEmpty = [UIImage imageNamed:@"Cont_Empty.png"];
+    UIImage *contFull = [UIImage imageNamed:@"Cont_Filled.png"];
+    
+    mainVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Control" image:contEmpty selectedImage:contFull
+                         ]
+    ;
     
     //add main view controller
     [viewContArray addObject:mainVC];

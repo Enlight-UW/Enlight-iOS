@@ -16,6 +16,8 @@
 		9F440C2D1980CFDC002BF743 /* enlighticon_80.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C261980CFDC002BF743 /* enlighticon_80.png */; };
 		9F440C2E1980CFDC002BF743 /* enlighticon_120.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C271980CFDC002BF743 /* enlighticon_120.png */; };
 		9F440C2F1980CFDC002BF743 /* enlighticon_152.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F440C281980CFDC002BF743 /* enlighticon_152.png */; };
+		9F769D2219888327008BE5DB /* Cont_Empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F769D2019888327008BE5DB /* Cont_Empty.png */; };
+		9F769D2319888327008BE5DB /* Cont_Filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F769D2119888327008BE5DB /* Cont_Filled.png */; };
 		9F92AC1719874BE000EDA701 /* TabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F92AC1619874BE000EDA701 /* TabViewController.m */; };
 		9FC721CB1974DA280057A7C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CA1974DA280057A7C8 /* Foundation.framework */; };
 		9FC721CD1974DA280057A7C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC721CC1974DA280057A7C8 /* CoreGraphics.framework */; };
@@ -63,6 +65,8 @@
 		9F440C261980CFDC002BF743 /* enlighticon_80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_80.png; sourceTree = "<group>"; };
 		9F440C271980CFDC002BF743 /* enlighticon_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_120.png; sourceTree = "<group>"; };
 		9F440C281980CFDC002BF743 /* enlighticon_152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enlighticon_152.png; sourceTree = "<group>"; };
+		9F769D2019888327008BE5DB /* Cont_Empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cont_Empty.png; sourceTree = "<group>"; };
+		9F769D2119888327008BE5DB /* Cont_Filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cont_Filled.png; sourceTree = "<group>"; };
 		9F92AC1519874BE000EDA701 /* TabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewController.h; sourceTree = "<group>"; };
 		9F92AC1619874BE000EDA701 /* TabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewController.m; sourceTree = "<group>"; };
 		9FC721C71974DA280057A7C8 /* Enlight-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Enlight-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +121,8 @@
 		9F440C191980CC1A002BF743 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9F769D2019888327008BE5DB /* Cont_Empty.png */,
+				9F769D2119888327008BE5DB /* Cont_Filled.png */,
 				9F440C221980CFDC002BF743 /* enlighticon_29.png */,
 				9F440C231980CFDC002BF743 /* enlighticon_40.png */,
 				9F440C241980CFDC002BF743 /* enlighticon_58.png */,
@@ -296,12 +302,14 @@
 				9F440C2A1980CFDC002BF743 /* enlighticon_40.png in Resources */,
 				9F440C2D1980CFDC002BF743 /* enlighticon_80.png in Resources */,
 				9FC721D51974DA280057A7C8 /* InfoPlist.strings in Resources */,
+				9F769D2219888327008BE5DB /* Cont_Empty.png in Resources */,
 				9F440C291980CFDC002BF743 /* enlighticon_29.png in Resources */,
 				9F440C2E1980CFDC002BF743 /* enlighticon_120.png in Resources */,
 				9F440C2B1980CFDC002BF743 /* enlighticon_58.png in Resources */,
 				9FC721DD1974DA280057A7C8 /* Images.xcassets in Resources */,
 				9F440C2F1980CFDC002BF743 /* enlighticon_152.png in Resources */,
 				9F440C2C1980CFDC002BF743 /* enlighticon_76.png in Resources */,
+				9F769D2319888327008BE5DB /* Cont_Filled.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
