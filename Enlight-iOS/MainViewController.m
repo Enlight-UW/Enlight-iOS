@@ -46,10 +46,9 @@
     buttonForShapeArray = [[NSMutableArray alloc] init];
     
     //initialize the fountain view
-    dispView = [[FountainDisplayView alloc] initWithFrame:CGRectMake(0, ([self.view frame].size.height - [[superView navigationBar] frame].size.height) / 4, [self.view frame].size.width, ([self.view frame].size.height - [[superView navigationBar] frame].size.height) / 2)];
+    dispView = [[FountainDisplayView alloc] initWithFrame:CGRectMake(0, [[superView navigationBar] frame].size.height + (([self.view frame].size.height - [[superView navigationBar] frame].size.height) / 20), [self.view frame].size.width, [self.view frame].size.width)];
     
     [self.view addSubview:dispView];
-    
     
     //now add button on the bottom to request control
     reqContButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -60,7 +59,7 @@
     
     buttonHeight += [superView tabBar].frame.origin.y;
     buttonHeight /= 2;
-    buttonHeight += fontSize;
+    buttonHeight -= fontSize / 2;
     
     [reqContButton setTitle:@"Request Control" forState:UIControlStateNormal];
     reqContButton.titleLabel.font = [UIFont systemFontOfSize:fontSize];

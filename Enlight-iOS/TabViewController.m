@@ -33,6 +33,9 @@
     
     mainVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Control" image:contEmpty selectedImage:contFull];
     
+    //set tag to 0
+    [mainVC.tabBarItem setTag:0];
+    
     //add main view controller
     [viewContArray addObject:mainVC];
     [tabBarItemsArray addObject:mainVC.tabBarItem];
