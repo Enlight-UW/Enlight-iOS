@@ -31,9 +31,7 @@
     UIImage *contEmpty = [UIImage imageNamed:@"Cont_Empty.png"];
     UIImage *contFull = [UIImage imageNamed:@"Cont_Filled.png"];
     
-    mainVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Control" image:contEmpty selectedImage:contFull
-                         ]
-    ;
+    mainVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Control" image:contEmpty selectedImage:contFull];
     
     //add main view controller
     [viewContArray addObject:mainVC];
