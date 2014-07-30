@@ -9,7 +9,6 @@
 #import "TabViewController.h"
 
 #define NAV_BAR_HEIGHT 44.0f
-#define TAB_BAR_HEIGHT 56.0f
 
 @interface TabViewController ()
 
@@ -35,8 +34,11 @@
     [viewContArray addObject:mainVC];
     [tabBarItemsArray addObject:mainVC.tabBarItem];
     
+    //use temporary tab bar controller to get the frame of a tab bar
+    UITabBarController *tempCont = [[UITabBarController alloc] init];
+    
     //set up tab bar
-    tabBar = [[UITabBar alloc] initWithFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height - TAB_BAR_HEIGHT, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+    tabBar = [[UITabBar alloc] initWithFrame:[[tempCont tabBar] frame]];
     
     //set delegate as self
     tabBar.delegate = self;

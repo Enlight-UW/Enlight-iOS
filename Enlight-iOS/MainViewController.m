@@ -10,15 +10,7 @@
 #import "Constants.h"
 #import "APIFunctions.h"
 #import "SecretKeys.h"
-
-//request control button defines
-#define REQ_CONT_BUTTON_PADDING 30 + 49
-#define REQ_CONT_BUTTON_WIDTH 200
-#define REQ_CONT_BUTTON_FONT 25
-
-//enlight title defines
-#define TITLE_LABEL_PADDING 30
-#define TITLE_LABEL_HEIGHT 40
+#import "TabViewController.h"
 
 //fade in define
 #define FADE_IN_TIME 3
@@ -36,6 +28,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //super view
+    TabViewController *superView = (TabViewController*)[self navigationController];
+    
     self.title = @"Control Fountain";
     
     //set up queue for asynchronous calls to the API
@@ -51,17 +46,24 @@
     buttonForShapeArray = [[NSMutableArray alloc] init];
     
     //initialize the fountain view
-    dispView = [[FountainDisplayView alloc] initWithFrame:CGRectMake(0, [self.view frame].size.height / 4, [self.view frame].size.width, [self.view frame].size.height / 2)];
+    dispView = [[FountainDisplayView alloc] initWithFrame:CGRectMake(0, ([self.view frame].size.height - [[superView navigationBar] frame].size.height) / 4, [self.view frame].size.width, ([self.view frame].size.height - [[superView navigationBar] frame].size.height) / 2)];
     
     [self.view addSubview:dispView];
     
     
     //now add button on the bottom to request control
     reqContButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [reqContButton setFrame:CGRectMake((self.view.frame.size.width / 2) - (REQ_CONT_BUTTON_WIDTH / 2), self.view.frame.size.height - (REQ_CONT_BUTTON_PADDING * 2), REQ_CONT_BUTTON_WIDTH, REQ_CONT_BUTTON_PADDING)];
+    
+    float fontSize = [[UIScreen mainScreen] bounds].size.height / 25;
+    
+    float buttonHeight = [dispView frame].origin.y + [dispView frame].size.height;
+    
+    buttonHeight += [superView tabBar].frame.origin.y;
+    buttonHeight /= 2;
+    buttonHeight += fontSize;
     
     [reqContButton setTitle:@"Request Control" forState:UIControlStateNormal];
-    reqContButton.titleLabel.font = [UIFont systemFontOfSize:REQ_CONT_BUTTON_FONT];
+    reqContButton.titleLabel.font = [UIFont systemFontOfSize:fontSize];
     reqContButton.alpha = 0.0f;
     
     //fade in uibutton
@@ -72,14 +74,19 @@
     //set target to request control
     [reqContButton addTarget:self action:@selector(reqControl:) forControlEvents:UIControlEventTouchDown];
     
+    [reqContButton sizeToFit];
+    
+    
+    [reqContButton setFrame:CGRectMake(([[UIScreen mainScreen] bounds].size.width / 2) - ([reqContButton frame].size.width / 2), buttonHeight, [reqContButton frame].size.width, fontSize)];
+    
     [self.view addSubview:reqContButton];
     
     //control fountain uilabel
-    contFountainLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - (REQ_CONT_BUTTON_PADDING * 2), self.view.frame.size.width, REQ_CONT_BUTTON_PADDING)];
+    contFountainLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, [reqContButton frame].origin.y, self.view.frame.size.width, [reqContButton frame].size.height)];
     
     [contFountainLabel setTextAlignment:NSTextAlignmentCenter];
     
-    contFountainLabel.font = [UIFont systemFontOfSize:REQ_CONT_BUTTON_FONT];
+    contFountainLabel.font = [UIFont systemFontOfSize:fontSize];
     [contFountainLabel setHidden:YES];
     [self.view addSubview:contFountainLabel];
     

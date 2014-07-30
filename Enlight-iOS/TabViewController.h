@@ -17,5 +17,6 @@
 //array of all the view controllers
 @property NSMutableArray *viewContArray;
 @property NSMutableArray *tabBarItemsArray;
+@property float tabBarHeight;
 
 @end
