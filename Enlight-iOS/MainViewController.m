@@ -132,6 +132,12 @@
         //request control of the fountain
         NSNumber *controllerID = [dict objectForKey:@"controllerID"];
         
+        //if no controller id is set, show error
+        if(controllerID == nil) {
+            [self showAlert:@"No Controller ID Returned"];
+            return;
+        }
+        
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             //start timer to check for position
             [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkPosition:) userInfo:controllerID repeats:YES];
