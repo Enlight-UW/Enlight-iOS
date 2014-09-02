@@ -21,6 +21,7 @@
 @implementation MainViewController {
     CAShapeLayer *tempShape;
     CGPoint prevPoint;
+    NSNumber *controllerID;
 }
 
 @synthesize dispView, reqContButton, buttonForShapeArray, pan, updateValveTime, hasControl, contFountainLabel, queue, loadingReqCont;
@@ -130,7 +131,7 @@
         }
         
         //request control of the fountain
-        NSNumber *controllerID = [dict objectForKey:@"controllerID"];
+        controllerID = [dict objectForKey:@"controllerID"];
         
         //if no controller id is set, show error
         if(controllerID == nil) {
@@ -140,7 +141,7 @@
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             //start timer to check for position
-            [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkPosition:) userInfo:controllerID repeats:YES];
+            [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkPosition:) userInfo:nil repeats:YES];
             
             [reqContButton setHidden:YES];
             [contFountainLabel setHidden:NO];
@@ -150,8 +151,6 @@
 }
 
 -(IBAction)checkPosition:(NSTimer*)sender {
-    NSNumber *controllerID = (NSNumber*)sender.userInfo;
-    
     NSMutableURLRequest *req = [APIFunctions queryControl:[SecretKeys getURL] withAPI:[SecretKeys getAPIKey] withControllerID:controllerID];
     
     [NSURLConnection sendAsynchronousRequest:req queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
@@ -171,13 +170,34 @@
             //check queue position
             NSNumber *queuePos = [dict objectForKey:@"trueQueuePosition"];
             
+            //if queue position is -1
+            
             //if queue position is 0, allow user to control the fountain
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [loadingReqCont stopAnimating];
-                if([queuePos intValue] == 0) {
+                if(([queuePos intValue] == 0) && !hasControl) {
                     [self setInControl];
-                } else {
+                } else if([queuePos intValue] != 0) {
                     [self setTextForPosition:queuePos];
+                    
+                    //need to reset timer and set has control as false when no longer in control
+                    if(hasControl) {
+                        hasControl = NO;
+                        
+                        //reset timer as well
+                        updateValveTime = [NSTimer scheduledTimerWithTimeInterval:0.7 target:self selector:@selector(updateFounatinValves:) userInfo:nil repeats:YES];
+                    }
+                    
+                    //if queue position is less than 1, then invalidate timer and also put the button up again
+                    if([queuePos intValue] < 0) {
+                        [sender invalidate];
+                        [contFountainLabel setText:nil];
+                        [contFountainLabel setHidden:YES];
+                        [reqContButton setHidden:NO];
+                    }
+                } else {
+                    NSNumber *eta = [dict objectForKey:@"eta"];
+                    [contFountainLabel setText:[NSString stringWithFormat:@"Time Remaining: %d", [eta intValue]]];
                 }
             }];
             
@@ -197,8 +217,6 @@
     //invalidate the updating timer so that user can see changes that they make
     [updateValveTime invalidate];
     updateValveTime = nil;
-    
-    
 }
 
 #pragma mark Update Fountain Valves
@@ -216,14 +234,15 @@
         }
         
         //parse nsdata to NSDictionary
-        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
         
-        if(jsonArray) {
-            for(NSDictionary *dict in (NSArray*)jsonArray) {
+        if(dict && [[dict objectForKey:@"success"] boolValue] ) {
+            NSArray *array = [dict objectForKey:@"items"];
+            for(NSDictionary *nDict in (NSArray*)array) {
                 //get the id of it
-                NSNumber *index = (NSNumber*)[dict objectForKey:@"0"];
+                NSNumber *index = (NSNumber*)[nDict objectForKey:@"ID"];
                 
-                NSNumber *isSpraying = (NSNumber*)[dict objectForKey:@"spraying"];
+                NSNumber *isSpraying = (NSNumber*)[nDict objectForKey:@"spraying"];
                 
                 CAShapeLayer *shape = [dispView.shapeArray objectAtIndex:[index intValue] - 1];
                 
@@ -253,7 +272,7 @@
     if(gesture.state == UIGestureRecognizerStateEnded) {
         //now call the bitmask since we now know that all states have been set
         //get bitmask of the fountain
-        NSMutableURLRequest *req = [APIFunctions setValves:[SecretKeys getURL] withAPI:[SecretKeys getAPIKey] withBitmask:[self getBitmask]];
+        NSMutableURLRequest *req = [APIFunctions setValves:[SecretKeys getURL] withAPI:[SecretKeys getAPIKey] withControllerID:[controllerID intValue] withBitmask:[self getBitmask]];
         
         [NSURLConnection sendAsynchronousRequest:req queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
             if(error) {

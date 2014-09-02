@@ -20,8 +20,8 @@
 +(NSMutableURLRequest*) queryControl:(NSString*)url withAPI:(NSString*)apiStr withControllerID:(NSNumber*)controllerID;
 +(NSMutableURLRequest*) reqControl:(NSString*)url withAPI:(NSString*)apiStr;
 +(NSMutableURLRequest*) relControl:(NSString*)url withAPI:(NSString*)apiStr;
-+(NSMutableURLRequest*) setValves:(NSString*)url withAPI:(NSString*)apiStr withBitmask:(int)bitInt;
-+(NSMutableURLRequest*) setValve:(NSString*)url withAPI:(NSString*)apiStr withIDValve:(int)idValve setToOn:(BOOL)setOn;
++(NSMutableURLRequest*) setValves:(NSString*)url withAPI:(NSString*)apiStr withControllerID:(int)controllerID withBitmask:(int)bitInt;
++(NSMutableURLRequest*) setValve:(NSString*)url withAPI:(NSString*)apiStr withControllerID:(int)controllerID withIDValve:(int)idValve setToOn:(BOOL)setOn;
 +(NSMutableURLRequest*) setPatterns:(NSString*)url withAPI:(NSString*)apiStr withIdPattern:(int)idPattern;
 
 @end

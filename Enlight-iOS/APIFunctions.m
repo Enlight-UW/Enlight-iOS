@@ -38,7 +38,7 @@
 }
 
 +(NSMutableURLRequest*) reqControl:(NSString*)url withAPI:(NSString*)apiStr {
-    return [self queryWithBody:[NSString stringWithFormat:@"%@/control/release", url] withDictionary:@{ @"apikey": apiStr}];
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/control/request", url] withDictionary:@{ @"apikey": apiStr, @"requestedLength": [NSNumber numberWithInt:30]}];
 }
 
 //release control of the fountain
@@ -46,12 +46,12 @@
     return [self queryWithBody:[NSString stringWithFormat:@"%@/control/release", url] withDictionary:@{ @"apikey": apiStr}];
 }
 
-+(NSMutableURLRequest*) setValves:(NSString*)url withAPI:(NSString*)apiStr withBitmask:(int)bitInt {
-    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves", url] withDictionary:@{ @"apikey": apiStr, @"bitmask": [NSNumber numberWithInt:bitInt]}];
++(NSMutableURLRequest*) setValves:(NSString*)url withAPI:(NSString*)apiStr withControllerID:(int)controllerID withBitmask:(int)bitInt {
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves", url] withDictionary:@{ @"apikey": apiStr, @"controllerID":[NSNumber numberWithInt:controllerID], @"bitmask": [NSNumber numberWithInt:bitInt]}];
 }
 
-+(NSMutableURLRequest*) setValve:(NSString*)url withAPI:(NSString*)apiStr withIDValve:(int)idValve setToOn:(BOOL)setOn {
-    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/%d", url, idValve] withDictionary:@{ @"apikey": apiStr, @"spraying": [NSNumber numberWithBool:setOn]}];
++(NSMutableURLRequest*) setValve:(NSString*)url withAPI:(NSString*)apiStr withControllerID:(int)controllerID withIDValve:(int)idValve setToOn:(BOOL)setOn {
+    return [self queryWithBody:[NSString stringWithFormat:@"%@/valves/%d", url, idValve] withDictionary:@{ @"apikey": apiStr, @"controllerID":[NSNumber numberWithInt:controllerID], @"spraying": [NSNumber numberWithInt:(setOn ? 1 : 0)]}];
 }
 
 
